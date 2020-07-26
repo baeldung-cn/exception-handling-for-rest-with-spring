@@ -9,14 +9,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashMap;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class, CustomException3.class})
     protected ResponseEntity<Object> handleConflict(
             IllegalArgumentException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific";
-        return handleExceptionInternal(ex, bodyOfResponse,
+        // 可以调用handleExceptionInternal方法在主体中返回任意类型
+        HashMap<String, String> hashMap = new HashMap<>(10);
+        hashMap.put("key", "value");
+        return handleExceptionInternal(ex, hashMap,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 

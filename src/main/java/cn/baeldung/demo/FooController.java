@@ -2,6 +2,7 @@ package cn.baeldung.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -10,6 +11,17 @@ import org.springframework.web.server.ResponseStatusException;
 public class FooController {
     @Autowired
     FooService fooService;
+
+    @GetMapping("/notSupported")
+    public void notSupported() throws HttpRequestMethodNotSupportedException {
+        throw new HttpRequestMethodNotSupportedException("get", "message");
+    }
+
+    @GetMapping("resourceNotFound")
+    public void resourceNotFound() {
+        throw new MyResourceNotFoundException("resourceNotFound exception message");
+    }
+
 
     @GetMapping(value = "/{id}")
     public Foo findById(@PathVariable Long id) {
@@ -50,6 +62,8 @@ public class FooController {
     public void test5() {
         throw new CustomException3();
     }
+
+
 
     private class CustomException1 extends RuntimeException {
     }
