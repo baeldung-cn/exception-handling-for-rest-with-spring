@@ -16,7 +16,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value
             = {IllegalArgumentException.class, IllegalStateException.class, CustomException3.class})
     protected ResponseEntity<Object> handleConflict(
-            IllegalArgumentException ex, WebRequest request) {
+            RuntimeException ex, WebRequest request) {
         // 可以调用handleExceptionInternal方法在主体中返回任意类型
         HashMap<String, String> hashMap = new HashMap<>(10);
         hashMap.put("key", "value");
@@ -27,7 +27,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(
             Exception ex, WebRequest request) {
-        return new ResponseEntity<Object>(
+        return new ResponseEntity<>(
                 "Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
